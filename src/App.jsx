@@ -9,7 +9,7 @@ import UserDashboard from "./components/dashboards/userdashboard"
 import { AuthProvider } from "./context/AuthContext";
 import SignupPage from "./components/auth/SignUpPage";
 import LoginPage from "./components/auth/LoginPage";
-// import AuthPages from "./components/auth/AuthPages";
+
 
 
 const App = () => {

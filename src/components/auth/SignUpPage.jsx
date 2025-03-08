@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { auth, db } from '../../firebase/firebaseConfig';
 import AuthAside from './Asidepage'; // Import AuthAside
@@ -43,6 +43,7 @@ const SignupPage = () => {
       });
 
       console.log('User data saved in Firestore.');
+      navigate('/home'); // Redirect to home page after successful signup
     } catch (err) {
       setError('Sign up failed. Please try again later.');
       alert("Signup failed");
@@ -51,6 +52,34 @@ const SignupPage = () => {
 
   const handleLoginRedirect = () => {
     navigate('/login'); // Redirect to the login page
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      // Sign in with Google
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      console.log('User signed in with Google:', user.email);
+
+      // Optionally save the user to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: user.displayName || formData.name, // Set display name if available, else use formData
+        email: user.email,
+        role: 'user'
+      });
+
+      console.log('User data saved in Firestore.');
+      alert("Google Sign-in success");
+
+      // Navigate to the home page after successful sign-in
+      navigate('/home');
+    } catch (err) {
+      console.error('Error with Google sign-in:', err.message);
+      alert('Google Sign-in failed. Please try again later.');
+    }
   };
 
   return (
@@ -136,7 +165,7 @@ const SignupPage = () => {
               <span>OR</span>
             </div>
 
-            <button type="button" className="social-btn google-btn">
+            <button type="button" className="social-btn google-btn" onClick={handleGoogleSignIn}>
               Continue with Google
             </button>
 

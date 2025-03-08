@@ -27,7 +27,7 @@ const LoginPage = () => {
     }
   };
 
-  const handleSigninRedirect = () => {
+  const handleSignupRedirect = () => {
     navigate('/signup'); // Redirect to the signup page when clicked
   };
 
@@ -43,7 +43,7 @@ const LoginPage = () => {
             </div>
             <div
               className="tab"
-              onClick={handleSigninRedirect} // Redirect to signup page when clicked
+              onClick={handleSignupRedirect} // Redirect to signup page when clicked
             >
               Sign Up
             </div>
@@ -87,20 +87,15 @@ const LoginPage = () => {
               <span>OR</span>
             </div>
 
-            <button type="button" className="social-btn google-btn">
-              Continue with Google
-            </button>
+            
 
             <p className="toggle-form-prompt">
               Don't have an account? 
-              <button 
-                type="button" 
-                className="toggle-form-btn"
-                onClick={handleSigninRedirect} // Call handleSigninRedirect when clicked
-              >
-                Sign up
-              </button>
+              
             </p>
+            <button type="button" className="social-btn google-btn"  onClick={handleSignupRedirect}>
+              Create one
+            </button>
           </form>
         </div>
       </div>
