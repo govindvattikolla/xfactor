@@ -15,7 +15,7 @@ import "bootstrap-icons/font/bootstrap-icons.css"; //footer icons
           <Col lg={4} md={6}>
             <div className="footer-logo mb-3">
               {/* Replace with your actual logo */}
-              <img src="/api/placeholder/160/50" alt="eduSkills Logo" className="img-fluid" />
+              <img src="../../src/assets/XFactor_mainLogo.jpg" alt="xfaxtor Logo" className="img-fluid" style={{height:"150px"}}/>
             </div>
             <p className="mb-4">
               Empowering professionals through expert-led courses designed to accelerate career growth
@@ -114,7 +114,7 @@ import "bootstrap-icons/font/bootstrap-icons.css"; //footer icons
               </li>
               <li className="mb-3 d-flex">
                 <i className="bi bi-envelope-fill me-2 text-primary"></i>
-                <a href="mailto:info@eduskills.com" className="text-white-50 text-decoration-none">
+                <a href="mailto:govindvattikolla@gamil.com" className="text-white-50 text-decoration-none">
                   info@example.com
                 </a>
               </li>
@@ -146,7 +146,7 @@ import "bootstrap-icons/font/bootstrap-icons.css"; //footer icons
         {/* Copyright Bar */}
         <Row className="mt-4 pt-4 border-top border-secondary">
           <Col md={6} className="text-center text-md-start mb-3 mb-md-0">
-            <p className="mb-0">&copy; 2025 XFACTOR. All rights reserved.</p>
+            <p className="mb-0">&copy; 2025 XFACTOR. All rights reserved. Developed by govind</p>
           </Col>
           <Col md={6} className="text-center text-md-end">
             <ul className="list-inline mb-0">

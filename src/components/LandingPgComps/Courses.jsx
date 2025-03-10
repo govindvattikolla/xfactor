@@ -14,7 +14,7 @@ import "./courses.css" //courses styles
       level: "Beginner to Intermediate",
       students: 423,
       rating: 4.8,
-      image: "/api/placeholder/400/250",
+      image: "../../src/assets/about-img2.jpg",
       category: "AI Skills",
       featured: true
     },
@@ -26,7 +26,7 @@ import "./courses.css" //courses styles
       level: "All Levels",
       students: 587,
       rating: 4.7,
-      image: "/api/placeholder/400/250",
+      image: "../../src/assets/about_img3.jpg",
       category: "Professional Skills",
       featured: true
     },
@@ -38,7 +38,7 @@ import "./courses.css" //courses styles
       level: "Beginner to Advanced",
       students: 756,
       rating: 4.9,
-      image: "/api/placeholder/400/250",
+      image: "../../src/assets/about_img3.jpg",
       category: "Career Development",
       featured: false
     },
@@ -50,7 +50,7 @@ import "./courses.css" //courses styles
       level: "All Levels",
       students: 632,
       rating: 4.6,
-      image: "/api/placeholder/400/250",
+      image: "../../src/assets/about-img2.jpg",
       category: "Digital Presence",
       featured: false
     }

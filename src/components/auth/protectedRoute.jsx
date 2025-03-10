@@ -1,38 +1,15 @@
-// src/components/Auth/ProtectedRoute.js
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { db } from "../../firebase/firebaseConfig";
-
-import { doc, getDoc } from "firebase/firestore";
 import AuthContext from "../../context/AuthContext";
 
-const ProtectedRoute = ({ element: Element, role, ...rest }) => {
+const ProtectedRoute = ({ element: Element, ...rest }) => {
   const { user } = useContext(AuthContext);
-  const [userRole, setUserRole] = useState(null);
-
-  useEffect(() => {
-    if (user) {
-      // Fetch role from Firestore
-      const fetchUserRole = async () => {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          setUserRole(userDoc.data().role);
-        }
-      };
-
-      fetchUserRole();
-    }
-  }, [user]);
 
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" />; // Redirect to login if user is not authenticated
   }
 
-  if (userRole !== role) {
-    return <Navigate to="/" />;
-  }
-
-  return <Element {...rest} />;
+  return <Element {...rest} />; // Render the protected element if user is authenticated
 };
 
 export default ProtectedRoute;

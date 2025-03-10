@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase/firebaseConfig';
+import { auth, db } from '../../firebase/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
 import AuthAside from './Asidepage'; // Import AuthAside
 import { useNavigate } from 'react-router-dom'; 
 import './AuthPages.css';
@@ -18,9 +19,30 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      // Sign in the user with email and password
+      const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       console.log('User logged in:', formData.email);
-      alert("Login success");
+
+      // Fetch the user data from Firestore to check their role
+      const userDocRef = doc(db, "users", userCredential.user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const userRole = userDoc.data().role;
+        
+        // Navigate based on user role
+        if (userRole === 'admin') {
+          navigate('/admin'); // Admin dashboard route
+        } else if (userRole === 'user') {
+          navigate('/user'); // User dashboard route
+        } else {
+          setError('User role not found.');
+          alert('User role not found.');
+        }
+      } else {
+        setError('User data not found.');
+        alert('User data not found.');
+      }
     } catch (err) {
       setError('Login failed. Please check your credentials.');
       alert('Login failed. Please check your credentials.');
@@ -87,13 +109,10 @@ const LoginPage = () => {
               <span>OR</span>
             </div>
 
-            
-
             <p className="toggle-form-prompt">
               Don't have an account? 
-              
             </p>
-            <button type="button" className="social-btn google-btn"  onClick={handleSignupRedirect}>
+            <button type="button" className="social-btn google-btn" onClick={handleSignupRedirect}>
               Create one
             </button>
           </form>

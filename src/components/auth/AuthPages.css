@@ -268,8 +268,13 @@
   .toggle-form-btn:hover {
     text-decoration: underline;
   }
+  .bi-google{
+    margin-right: 15px;
+    color:#3a5cdc;
+    
+  }
 
-  /* AuthPages.css */
+ 
 
 /* Style for error message */
 .error-message {

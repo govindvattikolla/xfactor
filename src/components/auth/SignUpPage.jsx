@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc, getDocs, collection } from 'firebase/firestore';
 import { auth, db } from '../../firebase/firebaseConfig';
 import AuthAside from './Asidepage'; // Import AuthAside
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import './AuthPages.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -35,15 +36,22 @@ const SignupPage = () => {
       const user = userCredential.user;
       console.log('User signed up:', user.email);
       alert("Signup success");
+      navigate('/login')
+
+      alert("please log in now")
+
+      // Check if the email is an admin (use hardcoded list or Firestore collection)
+      const adminEmails = ['govind@gamil.com', 'rajesh@gmail.com']; // Hardcoded list of admin emails
+      const role = adminEmails.includes(formData.email) ? 'admin' : 'user';
 
       await setDoc(doc(db, "users", user.uid), {
         name: formData.name,
         email: formData.email,
-        role: 'user'
+        role: role // Assign role based on admin list
       });
 
       console.log('User data saved in Firestore.');
-      navigate('/home'); // Redirect to home page after successful signup
+      navigate('/login'); // Redirect to home page after successful signup
     } catch (err) {
       setError('Sign up failed. Please try again later.');
       alert("Signup failed");
@@ -64,21 +72,25 @@ const SignupPage = () => {
 
       console.log('User signed in with Google:', user.email);
 
-      // Optionally save the user to Firestore
+      // Check if the user email is in the admin list
+      const adminEmails = ['vattikollagovind@gamil.com', 'admin2@example.com']; //  list of admin emails
+      const role = adminEmails.includes(user.email) ? 'admin' : 'user';
+
+      // Save user to Firestore with the determined role
       await setDoc(doc(db, "users", user.uid), {
-        name: user.displayName || formData.name, // Set display name if available, else use formData
+        name: user.displayName || formData.name, // Use displayName if available
         email: user.email,
-        role: 'user'
+        role: role // Assign role based on admin list
       });
 
       console.log('User data saved in Firestore.');
-      alert("Google Sign-in success");
+      alert("Google Sign-up success");
 
-      // Navigate to the home page after successful sign-in
+      // Navigate to the home page after successful sign-up
       navigate('/home');
     } catch (err) {
-      console.error('Error with Google sign-in:', err.message);
-      alert('Google Sign-in failed. Please try again later.');
+      console.error('Error with Google sign-up:', err.message);
+      alert('Google Sign-up failed. Please try again later.');
     }
   };
 
@@ -166,7 +178,7 @@ const SignupPage = () => {
             </div>
 
             <button type="button" className="social-btn google-btn" onClick={handleGoogleSignIn}>
-              Continue with Google
+              <i className="bi bi-google"></i> Continue with Google
             </button>
 
             <p className="toggle-form-prompt">
