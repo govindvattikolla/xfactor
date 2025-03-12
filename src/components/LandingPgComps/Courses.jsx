@@ -70,7 +70,7 @@ import "./courses.css" //courses styles
         <Row className="g-4">
           {courses.map((course) => (
             <Col key={course.id} xs={10} md={6} >
-              <Card className="h-100 border-0 shadow-lg hover-card"  style={{ maxWidth: "500px", margin: "auto" }}>
+              <Card className="h-100 border-0 shadow-lg hover-card"  style= {{ maxWidth: "500px", margin: "auto" }}>
                 <div className="position-relative">
                   <Card.Img variant="top" src={course.image} alt={course.title} style={{ height: "180px", objectFit: "cover" }} />
                   {course.featured && (
@@ -100,7 +100,7 @@ import "./courses.css" //courses styles
                 </Card.Footer>
               </Card>
             </Col>
-          ))}
+           ))}
         </Row>
         
         <Row className="mt-5">

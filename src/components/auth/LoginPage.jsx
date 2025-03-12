@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously } from 'firebase/auth';
 import { auth, db } from '../../firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 import AuthAside from './Asidepage'; // Import AuthAside
 import { useNavigate } from 'react-router-dom'; 
 import './AuthPages.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -51,6 +54,36 @@ const LoginPage = () => {
 
   const handleSignupRedirect = () => {
     navigate('/signup'); // Redirect to the signup page when clicked
+  };
+
+  // Handle Forgot Password
+  const handleForgotPassword = async () => {
+    if (!formData.email) {
+      setError('Please enter your email address to reset your password.');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, formData.email);
+      alert('Password reset email sent. Please check your inbox.');
+    } catch (err) {
+      console.error('Error sending password reset email:', err);
+      setError('Failed to send password reset email. Please try again.');
+    }
+  };
+
+  // Handle Guest Login
+  const handleGuestLogin = async () => {
+    try {
+      // Sign in anonymously
+      const userCredential = await signInAnonymously(auth);
+      console.log('Guest logged in:', userCredential.user);
+
+     
+      navigate('/user'); // redirect to user dashboard or any other page.
+    } catch (err) {
+      console.error('Error with guest login:', err);
+      setError('Guest login failed. Please try again.');
+    }
   };
 
   return (
@@ -105,16 +138,44 @@ const LoginPage = () => {
 
             <button type="submit" className="submit-btn">Login</button>
 
+            {/* Forgot Password Link */}
+            <div style={{ textAlign: 'center', marginTop: '5px', marginBottom: '5px' }}>
+              <a
+                className="forgot-password-link"
+                onClick={handleForgotPassword}
+                style={{
+                  color: '#007bff',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  marginTop: '10px',
+                }}
+              >
+                Forgot Password?
+              </a>
+            </div>
+
             <div className="separator">
               <span>OR</span>
             </div>
 
+            {/* Guest Login Button */}
+            <button type="button" className="social-btn google-btn" onClick={handleGuestLogin}>
+            
+            <i className="bi bi-person "></i>       Continue as Guest
+            </button>
+
             <p className="toggle-form-prompt">
               Don't have an account? 
+              <button 
+                type="button" 
+                className="toggle-form-btn"
+                onClick={handleSignupRedirect} // Call handleLoginRedirect when clicked
+              >
+                Sign Up
+              </button>
             </p>
-            <button type="button" className="social-btn google-btn" onClick={handleSignupRedirect}>
-              Create one
-            </button>
+
+            
           </form>
         </div>
       </div>

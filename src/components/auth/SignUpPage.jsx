@@ -120,7 +120,7 @@ const SignupPage = () => {
             {error && <p className="error-message">{error}</p>}
 
             <div className="form-group">
-              <label htmlFor="name">Full Name</label>
+              <label htmlFor="name">  Full Name</label>
               <input
                 type="text"
                 id="name"
@@ -133,7 +133,7 @@ const SignupPage = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email"> Email</label>
               <input
                 type="email"
                 id="email"
