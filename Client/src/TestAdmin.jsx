@@ -5,7 +5,7 @@ import Sidebar from './components/dashboards/admin/sidebar';
 import './components/dashboards/admin/adminStyles.css';
 import AdminHeader from './components/dashboards/admin/adm_header';
 import DashboardContent from './components/dashboards/admin/DashboardCont';
-import Patients from "./components/dashboards/admin/Patients";
+import Students from "./components/dashboards/admin/Students";
 import Appointments from './components/dashboards/admin/appointment';
 import MedicalRecords from './components/dashboards/admin/MedicalRec';
 import BillingPayments from './components/dashboards/admin/payment';
@@ -44,9 +44,9 @@ const App = () => {
                             <Routes>
                                 <Route path="/" element={<DashboardContent />} />
                                 <Route path="/dashboard" element={<DashboardContent />} />
-                                <Route path="/patients/add" element={<Patients />} />
+                                <Route path="/students/add" element={<Students />} />
                                 <Route path="/patients/update" element={<UpdatePatient />} />
-                                <Route path="/patients/" element={<Patients />} />
+                                <Route path="/patients/" element={<Students/>} />
                                 <Route path="/appointments" element={<Appointments />} />
                                 <Route path="/medicalRecords" element={<MedicalRecords />} />
                                 <Route path="/billing" element={<BillingPayments />} />

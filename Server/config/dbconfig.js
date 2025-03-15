@@ -10,7 +10,7 @@ const connectDB = async () => {
         console.error("❌ MongoDB Connection Failed:", error);
         process.exit(1);
     }
-    console.log(process.env.MONGO_URI)
+    
 };
 
 module.exports= connectDB;

@@ -3,24 +3,42 @@ import { Form, Input, Button, Upload, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 
-const AddPatientForm = () => {
+const AddstudentForm = () => {
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
 
     const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
     const handleFinish = async (values) => {
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("email", values.email);
+        formData.append("phone", values.phone);
+        formData.append("address", values.address);
+        formData.append("description", values.description);
+    
+        if (fileList.length > 0) {
+            formData.append("image", fileList[0].originFileObj);
+        }
+    
         try {
-            await axios.post("http://localhost:5000/api/patients/add", values);
-            message.success("Patient added successfully");
-            alert("Patient added successfully")
+            await axios.post("http://localhost:5000/api/students/add", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            message.success("Student added successfully");
+            alert("Student added successfully");
             form.resetFields();
+            setFileList([]);
         } catch (error) {
-            message.error("Error adding patient");
-            alert("error adding patient")
+            message.error("Error adding student");
+            alert("Error adding student");
+            console.error("Upload error:", error);
         }
     };
-
+    
+    
     const uploadButton = (
         <button style={{ border: 0, background: "none" }} type="button">
             <PlusOutlined />
@@ -29,16 +47,18 @@ const AddPatientForm = () => {
     );
 
     return (
-        <Form
+      <Form
             form={form}
             layout="vertical"
             onFinish={handleFinish}
+            encType="multipart/form-data"
             style={{ maxWidth: 500, margin: "0 auto", padding: 20, background: "#fef5e7", borderRadius: 8 }}
-        >
+                >
+
             <Form.Item>
                 <div className="upload-container">
                     <Upload listType="picture-circle" fileList={fileList} onChange={handleChange}>
-                        {fileList.length >= 8 ? null : uploadButton}
+                        {fileList.length >= 1 ? null : uploadButton}
                     </Upload>
                 </div>
             </Form.Item>
@@ -65,11 +85,12 @@ const AddPatientForm = () => {
 
             <Form.Item>
                 <Button type="primary" htmlType="submit" block>
-                    Add Patient
+                    Add student
                 </Button>
             </Form.Item>
         </Form>
     );
 };
 
-export default AddPatientForm;
+export default AddstudentForm;
+

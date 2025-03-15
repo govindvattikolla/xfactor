@@ -1,15 +1,15 @@
-let mongoose=require("mongoose")
+const mongoose = require("mongoose");
 
-
-const patientSchema = new mongoose.Schema({
+const studentSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String },
     phone: { type: String, required: true },
     address: { type: String },
     description: { type: String },
+    image: { type: String }, // Store image URL
     createdAt: { type: Date, default: Date.now },
 });
 
-const Patient = mongoose.model("Patient", patientSchema);
+const Student = mongoose.model("Student", studentSchema);
 
-module.exports= Patient;
+module.exports = Student;

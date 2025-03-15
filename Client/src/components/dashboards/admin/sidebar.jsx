@@ -22,7 +22,7 @@ const Sidebar = () => {
       {/* students Management */}
       <Menu.SubMenu key="patients" icon={<TeamOutlined />} title="students">
         <Menu.Item key="add-patient">
-          <Link to="/patients/add">Add student</Link>
+          <Link to="/students/add">Add student</Link>
         </Menu.Item>
         <Menu.Item key="update-patient">
           <Link to="/patients/update">Update student Info</Link>
@@ -46,7 +46,7 @@ const Sidebar = () => {
       </Menu.SubMenu>
 
       {/* Trainer Management */}
-      <Menu.SubMenu key="medicalRecords" icon={<UserOutlined />} title="Trainers">
+      {/* <Menu.SubMenu key="medicalRecords" icon={<UserOutlined />} title="Trainers">
         <Menu.Item key="create-record">
           <Link to="/medical-records/create">Create a Trainer</Link>
         </Menu.Item>
@@ -57,7 +57,7 @@ const Sidebar = () => {
           <Link to="/medical-records/history">View Trainer Details</Link>
         </Menu.Item>
         
-      </Menu.SubMenu>
+      </Menu.SubMenu> */}
 
       {/* Billing & Payments */}
       <Menu.SubMenu key="billingPayments" icon={<BankOutlined />} title="Billing & Payment">
