@@ -9,7 +9,8 @@ import Students from "./components/dashboards/admin/Students";
 import Appointments from './components/dashboards/admin/appointment';
 import MedicalRecords from './components/dashboards/admin/MedicalRec';
 import BillingPayments from './components/dashboards/admin/payment';
-import UpdatePatient from './components/dashboards/admin/updatePatient';
+
+import ViewStudents from './components/dashboards/admin/ViewStudents';
 const { Sider, Header, Content } = Layout;
 
 const App = () => {
@@ -45,8 +46,8 @@ const App = () => {
                                 <Route path="/" element={<DashboardContent />} />
                                 <Route path="/dashboard" element={<DashboardContent />} />
                                 <Route path="/students/add" element={<Students />} />
-                                <Route path="/patients/update" element={<UpdatePatient />} />
-                                <Route path="/patients/" element={<Students/>} />
+                                
+                                <Route path="/students/view" element={<ViewStudents/>} />
                                 <Route path="/appointments" element={<Appointments />} />
                                 <Route path="/medicalRecords" element={<MedicalRecords />} />
                                 <Route path="/billing" element={<BillingPayments />} />

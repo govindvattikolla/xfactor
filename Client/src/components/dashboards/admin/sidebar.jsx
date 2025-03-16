@@ -24,11 +24,11 @@ const Sidebar = () => {
         <Menu.Item key="add-patient">
           <Link to="/students/add">Add student</Link>
         </Menu.Item>
-        <Menu.Item key="update-patient">
+        {/* <Menu.Item key="update-patient">
           <Link to="/patients/update">Update student Info</Link>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="view-patient">
-          <Link to="/patients/view">View student Details</Link>
+          <Link to="/students/view">Manage Students</Link>
         </Menu.Item>
       </Menu.SubMenu>
 
