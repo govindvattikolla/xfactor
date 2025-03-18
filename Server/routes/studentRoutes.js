@@ -7,7 +7,7 @@ const Student = require("../models/students");
 const router = express.Router();
 
 // Ensure uploads directory exists
-const uploadDir = path.join(__dirname, "../uploads");
+const uploadDir = path.join(__dirname, "../uploads/students");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -49,7 +49,7 @@ router.post("/add", upload.single("image"), async (req, res) => {
         }
 
         
-        const imagePath = `/uploads/${req.file.filename}`;
+        const imagePath = `/uploads/students/${req.file.filename}`;
         console.log("Image path:", imagePath);
 
         // Create a new student with the uploaded image path

@@ -35,13 +35,13 @@ const Sidebar = () => {
       {/* session Management */}
       <Menu.SubMenu key="sessions" icon={<CalendarOutlined />} title="Session management">
         <Menu.Item key="upload-session">
-          <Link to="/sessions/upload">upload session</Link>
+          <Link to="/sessions/upload">upload Recordings</Link>
         </Menu.Item>
         <Menu.Item key="live-sessions">
-          <Link to="/sessions/live">live sessions</Link>
+          <Link to="/sessions/add">Add upcoming sessions</Link>
         </Menu.Item>
         <Menu.Item key="view-calendar">
-          <Link to="/sessions/schedule">schedule upcomming sessions</Link>
+          <Link to="/sessions/schedule">schedule upcoming sessions</Link>
         </Menu.Item>
       </Menu.SubMenu>
 

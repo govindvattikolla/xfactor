@@ -12,6 +12,8 @@ import BillingPayments from './components/dashboards/admin/payment';
 
 import ViewStudents from './components/dashboards/admin/ViewStudents';
 import UploadSession from './components/dashboards/admin/UploadSession';
+import UpcomingSessions from './components/dashboards/admin/UpcommingSessions';
+import AddSession from './components/dashboards/admin/AddNewSession';
 const { Sider, Header, Content } = Layout;
 
 const App = () => {
@@ -48,6 +50,9 @@ const App = () => {
                                 <Route path="/dashboard" element={<DashboardContent />} />
                                 <Route path="/students/add" element={<Students />} />
                                 <Route path="/sessions/upload" element={<UploadSession />} />
+                                <Route path="/sessions/schedule" element={<UpcomingSessions />} />
+                                <Route path="/sessions/add" element={<AddSession />} />
+
                                 <Route path="/students/view" element={<ViewStudents/>} />
                                 <Route path="/appointments" element={<Appointments />} />
                                 <Route path="/medicalRecords" element={<MedicalRecords />} />
