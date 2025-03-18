@@ -72,7 +72,7 @@ const ViewStudents = () => {
             message.error("Error deleting student");
         }
     };
-
+         
     const columns = [
         {
             title: "Image",
@@ -80,20 +80,22 @@ const ViewStudents = () => {
             key: "image",
             render: (image) => (
                 <Avatar
-                    src={
-                        image && typeof image === "string" && image.startsWith("http")
-                            ? image // If the image is already an absolute URL, use it directly
-                            : image
-                            ? `http://localhost:5000${image}` // If the image is a relative path, prepend the base URL
-                            : "https://via.placeholder.com/50" //  placeholder if image is not available
-                    }
-                    onError={(e) => {
-                        if (e && e.target) {
-                            e.target.src = "https://via.placeholder.com/50"; // Fallback image in case of error
-                        }
-                    }}
-                />
-            )                       
+                     src={
+                         image && typeof image === "string" && image.startsWith("http")
+                             ? image // If the image is already an absolute URL, use it directly
+                             : image
+                             ? `http://localhost:5000${image}` // If the image is a relative path, prepend the base URL
+                             : "https://via.placeholder.com/50" // Fallback image if no image is available
+                     }
+                     onError={(e) => {
+                         if (e && e.target) {
+                             e.target.src = "https://via.placeholder.com/50"; // Fallback image in case of error
+                         }
+                     }}
+                 />
+
+            )      
+                             
             
         },
         {

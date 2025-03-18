@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Row, Col } from 'antd';
-function DashboardContent() {
+function UserDbContent() {
     return (
         <>
             <Row gutter={[16, 16]} style={{ padding: '20px', textAlign:'center' }}>
@@ -15,12 +15,12 @@ function DashboardContent() {
                     </Card>
                 </Col>
                 <Col span={6}>
-                    <Card title="Billing & Payments" className='Patient-count'>
+                    <Card title="Total trainers" className='Patient-count'>
                         <p>0</p>
                     </Card>
                 </Col>
                 <Col span={6}>
-                    <Card title="Feedbacks" className='Patient-count'>
+                    <Card title="Billing & Payments" className='Patient-count'>
                         <p>0</p>
                     </Card>
                 </Col>  
@@ -33,17 +33,17 @@ function DashboardContent() {
                     </Card>
                 </Col>
                 <Col span={24}>
-                    <Card title="Session Details">
+                    <Card title="courses Details">
                         <p>Table will go here</p>
                     </Card>
                 </Col>
                 <Col span={24}>
-                    <Card title="billing and payments">
+                    <Card title="Sessions details">
                         <p>Table will go here</p>
                     </Card>
                 </Col>
                 <Col span={24}>
-                    <Card title="Feedbacks">
+                    <Card title="Billing & Payments">
                         <p>Table will go here</p>
                     </Card>
                 </Col>
@@ -53,4 +53,4 @@ function DashboardContent() {
 
 }
 
-export default DashboardContent
+export default UserDbContent

@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
 import { Layout } from 'antd';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/dashboards/admin/sidebar';
-import './components/dashboards/admin/adminStyles.css';
-import AdminHeader from './components/dashboards/admin/adm_header';
-import DashboardContent from './components/dashboards/admin/DashboardCont';
-import Students from "./components/dashboards/admin/Students";
-import Appointments from './components/dashboards/admin/appointment';
-import MedicalRecords from './components/dashboards/admin/MedicalRec';
-import BillingPayments from './components/dashboards/admin/payment';
+import Sidebar from './components/dashboards/user/UserSideBar';
+import './components/dashboards/user/UserStyles.css';
+import UserHeader from './components/dashboards/user/UserHeader';
+import UserDbContent from './components/dashboards/user/UserDbContent';
 
-import ViewStudents from './components/dashboards/admin/ViewStudents';
-import UploadSession from './components/dashboards/admin/UploadSession';
 const { Sider, Header, Content } = Layout;
 
-const App = () => {
+const TestUser = () => {
     const [collapsed, setCollapsed] = useState(false);
 
     return (
@@ -22,7 +16,7 @@ const App = () => {
             <Layout style={{ minHeight: '100vh' }}>
                 {/* Header Section */}
                 <Header className='Header'>
-                    <AdminHeader />
+                    <UserHeader />
                 </Header>
 
                 <Layout>
@@ -44,14 +38,11 @@ const App = () => {
                     <Layout style={{ marginLeft: collapsed ? '80px' : '250px', transition: 'margin-left 0.3s' }}>
                         <Content className='Content'>
                             <Routes>
-                                <Route path="/" element={<DashboardContent />} />
-                                <Route path="/dashboard" element={<DashboardContent />} />
-                                <Route path="/students/add" element={<Students />} />
-                                <Route path="/sessions/upload" element={<UploadSession />} />
-                                <Route path="/students/view" element={<ViewStudents/>} />
-                                <Route path="/appointments" element={<Appointments />} />
-                                <Route path="/medicalRecords" element={<MedicalRecords />} />
-                                <Route path="/billing" element={<BillingPayments />} />
+                                <Route path="/" element={<UserDbContent />} />
+                                <Route path="/User" element={<UserDbContent />} />
+                                
+                                
+                               
                                 {/* Add a 404 Page Not Found Route */}
                                 <Route path="*" element={<h2>Page Not Found</h2>} />
                             </Routes>
@@ -63,4 +54,4 @@ const App = () => {
     );
 }
 
-export default App;
+export default TestUser;

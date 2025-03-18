@@ -6,6 +6,8 @@ const Student = require("./models/students.js");
 let dotenv = require("dotenv");
 let path = require("path");
 const multer = require("multer"); 
+const { google } = require("googleapis");
+const fs = require("fs");
 
 dotenv.config();
 connectDB();
@@ -17,10 +19,10 @@ app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Set up multer storage for file uploads
-const storage = multer.diskStorage({
+// Set up multer storage for image uploads
+const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads'); 
+    cb(null, './uploads/images'); 
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -28,21 +30,22 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+const imageUpload = multer({ storage: imageStorage });
 
-// Serve static files (images) from the "uploads" directory
+// Serve static files (images) from the "uploads/images" directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-
-app.post('/api/upload', upload.single('image'), (req, res) => {
+// Image Upload API
+app.post('/api/upload', imageUpload.single('image'), (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     
-    const filePath = `/uploads/${req.file.filename}`;
+    const filePath = `/uploads/images/${req.file.filename}`;
     res.status(200).json({ filePath }); 
-  });
-  
+});
+
+
 
 // API Routes for students
 app.use("/api/students", studentRoutes);
@@ -71,15 +74,15 @@ app.put('/api/students/:id', async (req, res) => {
     const updatedData = req.body;
 
     const updatedStudent = await Student.findByIdAndUpdate(studentId, updatedData, {
-      new: true, // Return the updated student
-      runValidators: true, // Run schema validation during the update
+      new: true,
+      runValidators: true,
     });
 
     if (!updatedStudent) {
       return res.status(404).json({ error: 'Student not found' });
     }
 
-    res.status(200).json(updatedStudent); // Return updated student details
+    res.status(200).json(updatedStudent);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Error updating student' });
