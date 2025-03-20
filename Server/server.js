@@ -1,127 +1,117 @@
-let express = require("express");
-let cors = require("cors");
-let connectDB = require("./config/dbconfig.js");
-let studentRoutes = require("./routes/studentRoutes.js");
-const Student = require("./models/students.js");
-const sessionRoutes = require("./routes/SessionRoutes.js");
-let dotenv = require("dotenv");
-let path = require("path");
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
+const connectDB = require("./config/dbconfig.js");
+const studentRoutes = require("./routes/studentRoutes.js");
+const sessionRoutes = require("./routes/SessionRoutes.js");
+const courseRoutes = require("./routes/CourseRoutes.js"); 
+const Student = require("./models/students.js");
 
+// Load environment variables
 dotenv.config();
+
+// Connect to the database
 connectDB();
 
 const app = express();
 
-// Enable CORS for frontend to communicate with backend
+// Enable CORS for frontend communication
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Helper function to ensure that the upload directories exist
+// Helper function to ensure directories exist
 const ensureDirectoryExistence = (dir) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
 };
 
-// Ensure upload directories exist for students and sessions
-ensureDirectoryExistence('./uploads/students/images');
-ensureDirectoryExistence('./uploads/sessions/images');
+// Ensure upload directories exist
+ensureDirectoryExistence("./uploads/students/images");
+ensureDirectoryExistence("./uploads/sessions/images");
+ensureDirectoryExistence("./uploads/courses/images");
 
-// Set up multer storage for student image uploads
-const studentImageStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads/students/images');
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+// Multer Configuration for Image Uploads
+const configureMulter = (uploadPath) => {
+  return multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, uploadPath);
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      cb(null, uniqueSuffix + path.extname(file.originalname));
+    },
+  });
+};
 
-const studentImageUpload = multer({ storage: studentImageStorage });
+// Set up multer for students, sessions, and courses
+const studentImageUpload = multer({ storage: configureMulter("./uploads/students/images") });
+const sessionImageUpload = multer({ storage: configureMulter("./uploads/sessions/images") });
+const courseImageUpload = multer({ storage: configureMulter("./uploads/courses/images") });
 
-// Serve static files (images) from the "uploads/students" directory
+// Serve static files (images)
 app.use("/uploads/students", express.static(path.join(__dirname, "uploads/students")));
-
-// Student Image Upload API
-app.post('/api/upload/student', studentImageUpload.single('image'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-
-  const filePath = `/uploads/students/images/${req.file.filename}`;
-  res.status(200).json({ filePath });
-});
-
-// Set up multer storage for session image uploads
-const sessionImageStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads/sessions/images');
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
-const sessionImageUpload = multer({ storage: sessionImageStorage });
-
-// Serve static files (images) from the "uploads/sessions" directory
 app.use("/uploads/sessions", express.static(path.join(__dirname, "uploads/sessions")));
+app.use("/uploads/courses", express.static(path.join(__dirname, "uploads/courses")));
 
-// Session Image Upload API
-app.post('/api/upload/session', sessionImageUpload.single('image'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-
-  const filePath = `/uploads/sessions/images/${req.file.filename}`;
-  res.status(200).json({ filePath });
+// Image Upload APIs
+app.post("/api/upload/student", studentImageUpload.single("image"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  res.status(200).json({ filePath: `/uploads/students/images/${req.file.filename}` });
 });
 
-// API Routes for students
+app.post("/api/upload/session", sessionImageUpload.single("image"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  res.status(200).json({ filePath: `/uploads/sessions/images/${req.file.filename}` });
+});
+
+app.post("/api/upload/course", courseImageUpload.single("image"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  res.status(200).json({ filePath: `/uploads/courses/images/${req.file.filename}` });
+});
+
+// API Routes
 app.use("/api/students", studentRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/courses", courseRoutes); // Added course routes
 
-// DELETE route for deleting a student
-app.delete('/api/students/:id', async (req, res) => {
+// DELETE Student Route
+app.delete("/api/students/:id", async (req, res) => {
   try {
-    const studentId = req.params.id;
-    const student = await Student.findByIdAndDelete(studentId);
-    if (!student) {
-      return res.status(404).json({ error: 'Student not found' });
-    }
-    res.status(200).json({ message: 'Student deleted successfully' });
+    const student = await Student.findByIdAndDelete(req.params.id);
+    if (!student) return res.status(404).json({ error: "Student not found" });
+
+    res.status(200).json({ message: "Student deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: 'Error deleting student' });
+    console.error("Error deleting student:", error);
+    res.status(500).json({ error: "Error deleting student" });
   }
 });
 
-// PUT route for editing student details
-app.put('/api/students/:id', async (req, res) => {
+// PUT Student Update Route
+app.put("/api/students/:id", async (req, res) => {
   try {
-    const studentId = req.params.id;
-    const updatedData = req.body;
-
-    const updatedStudent = await Student.findByIdAndUpdate(studentId, updatedData, {
+    const updatedStudent = await Student.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!updatedStudent) {
-      return res.status(404).json({ error: 'Student not found' });
-    }
+    if (!updatedStudent) return res.status(404).json({ error: "Student not found" });
 
     res.status(200).json(updatedStudent);
   } catch (error) {
-    res.status(500).json({ error: 'Error updating student' });
+    console.error("Error updating student:", error);
+    res.status(500).json({ error: "Error updating student" });
   }
 });
 
-// API Routes for sessions
-app.use("/api/sessions", sessionRoutes);
+// user Apis
+app.use("/api/courses", courseRoutes);
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;

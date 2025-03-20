@@ -3,20 +3,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   DashboardOutlined, 
-  UserOutlined, 
   CalendarOutlined, 
   FileTextOutlined, 
   BankOutlined,
   BellOutlined,
   TeamOutlined
 } from '@ant-design/icons';
+import "./adminStyles.css"
+
 
 const Sidebar = () => {
   return (
-    <Menu mode='inline' className='menu-bar' defaultSelectedKeys={['dashboard']}>
+    <Menu mode='inline' className='menu-bar' defaultSelectedKeys={['dashboard']} >
       {/* Dashboard */}
       <Menu.Item key="dashboard" icon={<DashboardOutlined />}>
-        <Link to="/dashboard">Overview</Link>
+        <Link to="/dashboard" >Overview</Link>
       </Menu.Item>
 
       {/* students Management */}
@@ -35,29 +36,18 @@ const Sidebar = () => {
       {/* session Management */}
       <Menu.SubMenu key="sessions" icon={<CalendarOutlined />} title="Session management">
         <Menu.Item key="upload-session">
-          <Link to="/sessions/upload">upload Recordings</Link>
+          <Link to="/sessions/upload">Upload Recordings</Link>
         </Menu.Item>
         <Menu.Item key="live-sessions">
           <Link to="/sessions/add">Add upcoming sessions</Link>
         </Menu.Item>
+        <Menu.Item key="add-courses">
+          <Link to="/courses/add">Add courses</Link>
+        </Menu.Item>
         <Menu.Item key="view-calendar">
-          <Link to="/sessions/schedule">schedule upcoming sessions</Link>
+          <Link to="/sessions/schedule">Schedule upcoming sessions</Link>
         </Menu.Item>
       </Menu.SubMenu>
-
-      {/* Trainer Management */}
-      {/* <Menu.SubMenu key="medicalRecords" icon={<UserOutlined />} title="Trainers">
-        <Menu.Item key="create-record">
-          <Link to="/medical-records/create">Create a Trainer</Link>
-        </Menu.Item>
-        <Menu.Item key="update-record">
-          <Link to="/medical-records/update">Update Trainer Info</Link>
-        </Menu.Item>
-        <Menu.Item key="view-history">
-          <Link to="/medical-records/history">View Trainer Details</Link>
-        </Menu.Item>
-        
-      </Menu.SubMenu> */}
 
       {/* Billing & Payments */}
       <Menu.SubMenu key="billingPayments" icon={<BankOutlined />} title="Billing & Payment">
@@ -74,7 +64,7 @@ const Sidebar = () => {
       <Menu.Item key="notificatons" icon={<BellOutlined />}>
         <Link to="/notifications">Notifications</Link>
       </Menu.Item>
-      <Menu.Item key="feedback" icon={<FileTextOutlined />}>
+      <Menu.Item key="feedback" icon={<FileTextOutlined />} >
         <Link to="/feedback">Feedback</Link>
       </Menu.Item>
     </Menu>

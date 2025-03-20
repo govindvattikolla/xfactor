@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { Input, Button, DatePicker, Upload, message, Form, InputNumber } from "antd";
+import { Input, Button, DatePicker, Upload, message, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 const AddSession = () => {
     const [image, setImage] = useState(null);
     const [title, setTitle] = useState("");
-    const [timestamp, setTimestamp] = useState(null);  // Initialize as null to handle invalid dates properly
-    const [price, setPrice] = useState(null);  // Add price state
+    const [timestamp, setTimestamp] = useState(null);
+    const [category, setCategory] = useState("");  
+    const [description, setDescription] = useState("");  
 
     // Handle image upload response
     const handleImageChange = (info) => {
@@ -19,33 +20,45 @@ const AddSession = () => {
 
     // Handle form submission
     const handleFormSubmit = async () => {
-        if (!image || !title || !timestamp || price === null) {
+        if (!image || !title || !timestamp || !category || !description) {
             message.error("Please fill in all fields");
             return;
         }
     
-        console.log("Form data being sent:", { image, title, timestamp, price });
+        const requestData = {
+            image,
+            title,
+            timestamp: new Date(timestamp),  // Convert to Date
+            category,
+            description
+        };
+    
+        console.log("Sending Data to Backend:", requestData);
     
         try {
-            await axios.post("http://localhost:5000/api/sessions/add", {
-                image,
-                title,
-                timestamp,
-                price,  // Send price with the session data
-            });
+            const response = await axios.post("http://localhost:5000/api/sessions/add", requestData);
             message.success("Session added successfully");
-            alert("session added successfully")
+            alert("Session added successfully");
+    
+            // Clear form after submission
+            setImage(null);
+            setTitle("");
+            setTimestamp(null);
+            setCategory("");
+            setDescription("");
         } catch (error) {
-            console.error("Error adding session:", error);
+            console.error("Error adding session:", error.response?.data || error);
             message.error("Error adding session");
-            alert("Error adding Session")
+            alert("Error adding session");
         }
     };
     
-
+    
+    
     return (
         <div style={styles.container}>
             <Form layout="vertical" onFinish={handleFormSubmit} style={styles.form}>
+                <h3 style={{textAlign:"center",marginBottom:"20px"}}>Add Upcomming sessions</h3>
                 {/* Session Title */}
                 <Form.Item label="Session Title">
                     <Input
@@ -59,7 +72,7 @@ const AddSession = () => {
                 <Form.Item label="Session Image">
                     <Upload
                         name="image"
-                        action="http://localhost:5000/api/upload/session"  // Use the session image upload route
+                        action="http://localhost:5000/api/upload/session"  
                         listType="picture"
                         onChange={handleImageChange}
                         showUploadList={false}
@@ -67,8 +80,8 @@ const AddSession = () => {
                         <Button icon={<PlusOutlined />}>Upload Image</Button>
                     </Upload>
                     {image && (
-            <p className="mt-2 text-gray-600">Selected File: {image.split('/').pop()}</p> 
-          )}
+                        <p className="mt-2 text-gray-600">Selected File: {image.split('/').pop()}</p> 
+                    )}
                 </Form.Item>
 
                 {/* Session Date and Time */}
@@ -82,14 +95,21 @@ const AddSession = () => {
                     />
                 </Form.Item>
 
-                {/* Session Price */}
-                <Form.Item label="Session Price">
-                    <InputNumber
-                        min={0}
-                        value={price}
-                        onChange={(value) => setPrice(value)}
-                        placeholder="Enter session price"
-                        style={{ width: '100%' }}
+                {/* Session Category */}
+                <Form.Item label="Session Category">
+                    <Input
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        placeholder="Enter category (course)"
+                    />
+                </Form.Item>
+
+                {/* Session Description */}
+                <Form.Item label="Session Description">
+                    <Input
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder="Enter description"
                     />
                 </Form.Item>
 

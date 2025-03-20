@@ -5,15 +5,17 @@ import Sidebar from './components/dashboards/admin/sidebar';
 import './components/dashboards/admin/adminStyles.css';
 import AdminHeader from './components/dashboards/admin/adm_header';
 import DashboardContent from './components/dashboards/admin/DashboardCont';
-import Students from "./components/dashboards/admin/Students";
+
 import Appointments from './components/dashboards/admin/appointment';
 import MedicalRecords from './components/dashboards/admin/MedicalRec';
 import BillingPayments from './components/dashboards/admin/payment';
 
-import ViewStudents from './components/dashboards/admin/ViewStudents';
+import ViewStudents from './components/dashboards/admin/StudentManagement/ViewStudents';
 import UploadSession from './components/dashboards/admin/UploadSession';
 import UpcomingSessions from './components/dashboards/admin/UpcommingSessions';
 import AddSession from './components/dashboards/admin/AddNewSession';
+import AddstudentForm from './components/dashboards/admin/StudentManagement/addStudents';
+import AddCourse from './components/dashboards/admin/AddCourses';
 const { Sider, Header, Content } = Layout;
 
 const App = () => {
@@ -48,10 +50,11 @@ const App = () => {
                             <Routes>
                                 <Route path="/" element={<DashboardContent />} />
                                 <Route path="/dashboard" element={<DashboardContent />} />
-                                <Route path="/students/add" element={<Students />} />
+                                <Route path="/students/add" element={<AddstudentForm />} />
                                 <Route path="/sessions/upload" element={<UploadSession />} />
                                 <Route path="/sessions/schedule" element={<UpcomingSessions />} />
                                 <Route path="/sessions/add" element={<AddSession />} />
+                                <Route path="/courses/add" element={<AddCourse />} />
 
                                 <Route path="/students/view" element={<ViewStudents/>} />
                                 <Route path="/appointments" element={<Appointments />} />

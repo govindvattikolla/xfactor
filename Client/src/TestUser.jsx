@@ -5,6 +5,7 @@ import Sidebar from './components/dashboards/user/UserSideBar';
 import './components/dashboards/user/UserStyles.css';
 import UserHeader from './components/dashboards/user/UserHeader';
 import UserDbContent from './components/dashboards/user/UserDbContent';
+import AllCourses from './components/dashboards/user/AllCourses';
 
 const { Sider, Header, Content } = Layout;
 
@@ -40,6 +41,7 @@ const TestUser = () => {
                             <Routes>
                                 <Route path="/" element={<UserDbContent />} />
                                 <Route path="/User" element={<UserDbContent />} />
+                                <Route path="/allCourses" element={<AllCourses />} />
                                 
                                 
                                

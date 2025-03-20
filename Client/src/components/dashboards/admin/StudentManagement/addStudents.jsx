@@ -52,7 +52,7 @@ const AddstudentForm = () => {
             layout="vertical"
             onFinish={handleFinish}
             encType="multipart/form-data"
-            style={{ maxWidth: 500, margin: "0 auto", padding: 20, background: "#fef5e7", borderRadius: 8 }}
+            style={{ maxWidth: 500, margin: "0 auto", padding: 20, background: "#bbe4e9", borderRadius: 8 }}
                 >
 
             <Form.Item>

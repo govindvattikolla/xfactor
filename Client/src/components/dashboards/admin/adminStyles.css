@@ -79,6 +79,10 @@
     background-color: #1e2735 !important;
     color: #fff !important;
 }
+.ant-menu a {
+    text-decoration: none !important;
+  }
+  
 
 /* Header Section */
 .admin-header {
