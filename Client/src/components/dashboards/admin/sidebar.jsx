@@ -21,14 +21,14 @@ const Sidebar = () => {
       </Menu.Item>
 
       {/* students Management */}
-      <Menu.SubMenu key="patients" icon={<TeamOutlined />} title="students">
-        <Menu.Item key="add-patient">
+      <Menu.SubMenu key="students" icon={<TeamOutlined />} title="students">
+        <Menu.Item key="add-student">
           <Link to="/students/add">Add student</Link>
         </Menu.Item>
         {/* <Menu.Item key="update-patient">
           <Link to="/patients/update">Update student Info</Link>
         </Menu.Item> */}
-        <Menu.Item key="view-patient">
+        <Menu.Item key="view-student">
           <Link to="/students/view">Manage Students</Link>
         </Menu.Item>
       </Menu.SubMenu>
@@ -36,13 +36,13 @@ const Sidebar = () => {
       {/* session Management */}
       <Menu.SubMenu key="sessions" icon={<CalendarOutlined />} title="Session management">
         <Menu.Item key="upload-session">
-          <Link to="/sessions/upload">Upload Recordings</Link>
+          <Link to="/sessions/view">ViewAllSessions</Link>
         </Menu.Item>
         <Menu.Item key="live-sessions">
-          <Link to="/sessions/add">Add upcoming sessions</Link>
+          <Link to="/sessions/add">Add Sessions</Link>
         </Menu.Item>
         <Menu.Item key="add-courses">
-          <Link to="/courses/add">Add courses</Link>
+          <Link to="/courses/add">Add Courses</Link>
         </Menu.Item>
         <Menu.Item key="view-calendar">
           <Link to="/sessions/schedule">Schedule upcoming sessions</Link>

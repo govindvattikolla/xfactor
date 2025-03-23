@@ -7,8 +7,10 @@ const fs = require("fs");
 const connectDB = require("./config/dbconfig.js");
 const studentRoutes = require("./routes/studentRoutes.js");
 const sessionRoutes = require("./routes/SessionRoutes.js");
-const courseRoutes = require("./routes/CourseRoutes.js"); 
+const courseRoutes = require("./routes/CourseRoutes.js");
+const Course =require("./models/Courses.js")
 const Student = require("./models/students.js");
+const Session = require("./models/AddSession.js"); // ✅ Import session model
 
 // Load environment variables
 dotenv.config();
@@ -19,7 +21,24 @@ connectDB();
 const app = express();
 
 // Enable CORS for frontend communication
-app.use(cors({ origin: "http://localhost:5173" }));
+
+
+const corsOptions = {
+  origin: "http://localhost:5173", // ✅ Ensure this matches your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true, // ✅ Required for cookies/sessions/authentication
+};
+
+app.use(cors(corsOptions));
+
+// ✅ Explicitly allow credentials in responses
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -31,27 +50,23 @@ const ensureDirectoryExistence = (dir) => {
 };
 
 // Ensure upload directories exist
-ensureDirectoryExistence("./uploads/students/images");
-ensureDirectoryExistence("./uploads/sessions/images");
-ensureDirectoryExistence("./uploads/courses/images");
+["./uploads/students/images", "./uploads/sessions/images", "./uploads/courses/images"].forEach(ensureDirectoryExistence);
 
 // Multer Configuration for Image Uploads
-const configureMulter = (uploadPath) => {
-  return multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, uploadPath);
-    },
+const configureMulter = (uploadPath) => multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, uploadPath),
     filename: (req, file, cb) => {
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
       cb(null, uniqueSuffix + path.extname(file.originalname));
     },
-  });
-};
+  }),
+});
 
 // Set up multer for students, sessions, and courses
-const studentImageUpload = multer({ storage: configureMulter("./uploads/students/images") });
-const sessionImageUpload = multer({ storage: configureMulter("./uploads/sessions/images") });
-const courseImageUpload = multer({ storage: configureMulter("./uploads/courses/images") });
+const studentImageUpload = configureMulter("./uploads/students/images");
+const sessionImageUpload = configureMulter("./uploads/sessions/images");
+const courseImageUpload = configureMulter("./uploads/courses/images");
 
 // Serve static files (images)
 app.use("/uploads/students", express.static(path.join(__dirname, "uploads/students")));
@@ -77,7 +92,29 @@ app.post("/api/upload/course", courseImageUpload.single("image"), (req, res) => 
 // API Routes
 app.use("/api/students", studentRoutes);
 app.use("/api/sessions", sessionRoutes);
-app.use("/api/courses", courseRoutes); // Added course routes
+app.use("/api/courses", courseRoutes);
+
+// ✅ GET Sessions Course-wise
+app.get("/api/sessions", async (req, res) => {
+  try {
+    const sessions = await Session.find().populate("courseId", "title description");
+    const groupedSessions = {};
+
+    // Group sessions by course
+    sessions.forEach((session) => {
+      const courseTitle = session.courseId?.title || "Unknown Course";
+      if (!groupedSessions[courseTitle]) {
+        groupedSessions[courseTitle] = [];
+      }
+      groupedSessions[courseTitle].push(session);
+    });
+
+    res.status(200).json(groupedSessions);
+  } catch (error) {
+    console.error("❌ Error fetching sessions:", error);
+    res.status(500).json({ error: "Error fetching sessions" });
+  }
+});
 
 // DELETE Student Route
 app.delete("/api/students/:id", async (req, res) => {
@@ -87,7 +124,7 @@ app.delete("/api/students/:id", async (req, res) => {
 
     res.status(200).json({ message: "Student deleted successfully" });
   } catch (error) {
-    console.error("Error deleting student:", error);
+    console.error("❌ Error deleting student:", error);
     res.status(500).json({ error: "Error deleting student" });
   }
 });
@@ -104,13 +141,35 @@ app.put("/api/students/:id", async (req, res) => {
 
     res.status(200).json(updatedStudent);
   } catch (error) {
-    console.error("Error updating student:", error);
+    console.error("❌ Error updating student:", error);
     res.status(500).json({ error: "Error updating student" });
   }
 });
 
-// user Apis
-app.use("/api/courses", courseRoutes);
+// for sessions based on course
+app.get("/api/courses/:id/sessions", async (req, res) => {
+  try {
+    console.log("Fetching sessions for Course ID:", req.params.id);
+    
+  
+    const course = await Course.findById(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    
+    const sessions = await Session.find({ courseId: req.params.id });
+
+    res.json({ course, sessions });
+  } catch (error) {
+    console.error("Error fetching course sessions:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
+
 
 
 // Start the server

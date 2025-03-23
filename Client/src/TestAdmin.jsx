@@ -16,6 +16,8 @@ import UpcomingSessions from './components/dashboards/admin/UpcommingSessions';
 import AddSession from './components/dashboards/admin/AddNewSession';
 import AddstudentForm from './components/dashboards/admin/StudentManagement/addStudents';
 import AddCourse from './components/dashboards/admin/AddCourses';
+import ViewAllSessions from './components/dashboards/admin/ViewAllSessions';
+import SessionsPage from './components/dashboards/admin/specificSession';
 const { Sider, Header, Content } = Layout;
 
 const App = () => {
@@ -51,9 +53,10 @@ const App = () => {
                                 <Route path="/" element={<DashboardContent />} />
                                 <Route path="/dashboard" element={<DashboardContent />} />
                                 <Route path="/students/add" element={<AddstudentForm />} />
-                                <Route path="/sessions/upload" element={<UploadSession />} />
+                                <Route path="/sessions/view" element={<ViewAllSessions />} />
                                 <Route path="/sessions/schedule" element={<UpcomingSessions />} />
                                 <Route path="/sessions/add" element={<AddSession />} />
+                                <Route path="/courses/:courseId/sessions" element={<SessionsPage />} /> 
                                 <Route path="/courses/add" element={<AddCourse />} />
 
                                 <Route path="/students/view" element={<ViewStudents/>} />

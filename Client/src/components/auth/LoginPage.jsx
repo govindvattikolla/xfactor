@@ -22,35 +22,45 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Sign in the user with email and password
-      const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      console.log('User logged in:', formData.email);
+        // List of admin emails
+        const adminEmails = ['govind@gmail.com', 'rajesh@gmail.com'];
 
-      // Fetch the user data from Firestore to check their role
-      const userDocRef = doc(db, "users", userCredential.user.uid);
-      const userDoc = await getDoc(userDocRef);
+        // Sign in the user with email and password
+        const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        console.log('User logged in:', formData.email);
 
-      if (userDoc.exists()) {
-        const userRole = userDoc.data().role;
-        
-        // Navigate based on user role
-        if (userRole === 'admin') {
-          navigate('/admin'); // Admin dashboard route
-        } else if (userRole === 'user') {
-          navigate('/user'); // User dashboard route
+        let role = "user"; // Default role
+
+        // Check if the user is in the hardcoded admin list
+        if (adminEmails.includes(formData.email)) {
+            role = "admin";
         } else {
-          setError('User role not found.');
-          alert('User role not found.');
+            // Fetch user data from Firestore
+            const userDocRef = doc(db, "users", userCredential.user.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                role = userDoc.data().role || "user"; // Fallback to user if role isn't set
+            } else {
+                setError('User data not found.');
+                alert('User data not found.');
+                return;
+            }
         }
-      } else {
-        setError('User data not found.');
-        alert('User data not found.');
-      }
+
+        // Navigate based on role
+        if (role === 'admin') {
+            navigate('/admin'); // Admin dashboard route
+        } else {
+            navigate('/user'); // User dashboard route
+        }
     } catch (err) {
-      setError('Login failed. Please check your credentials.');
-      alert('Login failed. Please check your credentials.');
+        console.error('Login error:', err);
+        setError('Login failed. Please check your credentials.');
+        alert('Login failed. Please check your credentials.');
     }
-  };
+};
+
 
   const handleSignupRedirect = () => {
     navigate('/signup'); // Redirect to the signup page when clicked

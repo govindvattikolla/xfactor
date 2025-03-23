@@ -8,7 +8,6 @@ const AddCourse = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
-    const [category, setCategory] = useState("");  // Added category field
 
     // Handle image upload
     const handleImageChange = (info) => {
@@ -19,45 +18,48 @@ const AddCourse = () => {
 
     // Handle form submission
     const handleFormSubmit = async () => {
-        if (!image || !title || !description || !price || !category) {
+        if (!image || !title || !description || !price) {
             message.error("Please fill in all fields");
             return;
         }
-    
+
         const requestData = {
             image,
             title,
             description,
             price: Number(price), // Ensure price is sent as a number
-            category
         };
-    
+
         console.log("Sending Data to Backend:", requestData); // Debugging log
-    
+
         try {
             const response = await axios.post("http://localhost:5000/api/courses/add", requestData);
             message.success("Course added successfully");
-            alert("course added successfully")
+            alert("✅ Course added successfully!");
 
             // Clear form after submission
             setImage(null);
             setTitle("");
             setDescription("");
             setPrice("");
-            setCategory(""); // Clear category field
         } catch (error) {
             console.error("Error adding course:", error.response?.data || error);
-            message.error("Error adding course");
+            
+            // Check if the error is due to a duplicate title
+            if (error.response?.data?.error === "Course with this title already exists") {
+                alert("⚠️ Course with this title already exists. Please use a different name.");
+            } else {
+                message.error("Error adding course");
+            }
         }
     };
-    
 
     return (
         <div style={styles.container}>
             <Form layout="vertical" onFinish={handleFormSubmit} style={styles.form}>
-                <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Add New Course</h3>
+                <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Add New Course</h2>
 
-                <Form.Item label="Course Title">
+                <Form.Item label="Course Title" required>
                     <Input
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -65,7 +67,7 @@ const AddCourse = () => {
                     />
                 </Form.Item>
 
-                <Form.Item label="Course Image">
+                <Form.Item label="Course Image" required>
                     <Upload
                         name="image"
                         action="http://localhost:5000/api/upload/course"
@@ -78,7 +80,7 @@ const AddCourse = () => {
                     {image && <p>Selected File: {image.split('/').pop()}</p>}
                 </Form.Item>
 
-                <Form.Item label="Course Description">
+                <Form.Item label="Course Description" required>
                     <Input.TextArea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -86,20 +88,12 @@ const AddCourse = () => {
                     />
                 </Form.Item>
 
-                <Form.Item label="Course Price">
+                <Form.Item label="Course Price" required>
                     <Input
                         type="number"
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
                         placeholder="Enter price"
-                    />
-                </Form.Item>
-
-                <Form.Item label="Course Category">
-                    <Input
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        placeholder="Enter category"
                     />
                 </Form.Item>
 
@@ -118,6 +112,7 @@ const styles = {
         alignItems: 'center',
         height: '100vh',
         backgroundColor: '#bbe4e9',
+        margin: '-25px'
     },
     form: {
         maxWidth: '500px',
