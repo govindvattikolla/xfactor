@@ -1,0 +1,71 @@
+[33mcommit 85423901c99d59e59addd8963bd1fdb0779af79b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mcourseManagement[m[33m, [m[1;31morigin/main[m[33m, [m[1;32morigin/main[m[33m)[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Sun Mar 23 18:19:49 2025 +0530
+
+    courseManagement
+
+[33mcommit 0abe72d848e9b540eb75fbb20fba6b4a8f185fac[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Thu Mar 20 17:38:13 2025 +0530
+
+    sessions updated
+
+[33mcommit f10da2f672c39a184bb9db1faa4fe031942b83e0[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Tue Mar 18 19:21:34 2025 +0530
+
+    AddNewsession
+
+[33mcommit 067f49c1e09d89a91d940491b3db75793fda5ff7[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Tue Mar 18 17:13:30 2025 +0530
+
+    stdPortionWithImg
+
+[33mcommit 2d8b8009889e3a799883a50d3b4e73a23ded0e42[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Sun Mar 16 16:43:00 2025 +0530
+
+    stdPortionDone
+
+[33mcommit aedf4c19cdea0c254beb6fbf86bd1f592578343b[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Sat Mar 15 11:37:36 2025 +0530
+
+    addstudent
+
+[33mcommit afe7c6d23fe918901546e30b1a1963a34d95745d[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Fri Mar 14 17:52:16 2025 +0530
+
+    db connection
+
+[33mcommit e4b5da454e35b39dc544ec8bf7ce21dc08a0c357[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Wed Mar 12 17:55:57 2025 +0530
+
+    authentications
+
+[33mcommit b995db9d1fb6da82c95d48283480717740106d7e[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Mon Mar 10 17:18:20 2025 +0530
+
+    role based authentication
+
+[33mcommit 54583b3fa85d1c4ebd7f788528fbc33cc858ed34[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Sat Mar 8 14:40:04 2025 +0530
+
+    login validations
+
+[33mcommit a3d9f16df740946e5568f38836e651e9b6137292[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Fri Mar 7 22:33:23 2025 +0530
+
+    commit2
+
+[33mcommit ee1cd9d19545880e94582e2008b0090d72efead7[m
+Author: govindvattikolla <115821562+govindvattikolla@users.noreply.github.com>
+Date:   Fri Mar 7 15:19:34 2025 +0530
+
+    commit1

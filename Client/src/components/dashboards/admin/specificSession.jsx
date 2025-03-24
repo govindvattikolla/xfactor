@@ -78,15 +78,19 @@ const SpecificSession = () => {
   /** ✅ Handle Delete Session **/
   const handleDelete = async (sessionId) => {
     if (!window.confirm("Are you sure you want to delete this session?")) return;
-
+  
     try {
-      await axios.delete(`http://localhost:5000/api/sessions/${sessionId}`, { withCredentials: true });
+      // Check if the sessionId is valid
+      console.log("Deleting session with ID:", sessionId);
+  
+      const response = await axios.delete(`http://localhost:5000/api/sessions/${sessionId}`, { withCredentials: true });
       setSessions(sessions.filter((session) => session._id !== sessionId));
       console.log("✅ Session Deleted");
     } catch (error) {
       console.error("❌ Error deleting session:", error);
     }
   };
+  
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>

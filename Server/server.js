@@ -8,7 +8,7 @@ const connectDB = require("./config/dbconfig.js");
 const studentRoutes = require("./routes/studentRoutes.js");
 const sessionRoutes = require("./routes/SessionRoutes.js");
 const courseRoutes = require("./routes/CourseRoutes.js");
-const Course =require("./models/Courses.js")
+const Course = require("./models/Courses.js");
 const Student = require("./models/students.js");
 const Session = require("./models/AddSession.js"); // ✅ Import session model
 
@@ -21,15 +21,14 @@ connectDB();
 const app = express();
 
 // Enable CORS for frontend communication
-
-
 const corsOptions = {
   origin: "http://localhost:5173", // ✅ Ensure this matches your frontend URL
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-requested-with"], // Added 'x-requested-with'
   credentials: true, // ✅ Required for cookies/sessions/authentication
 };
 
+// Enable CORS middleware
 app.use(cors(corsOptions));
 
 // ✅ Explicitly allow credentials in responses
@@ -37,7 +36,6 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -151,13 +149,11 @@ app.get("/api/courses/:id/sessions", async (req, res) => {
   try {
     console.log("Fetching sessions for Course ID:", req.params.id);
     
-  
     const course = await Course.findById(req.params.id);
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    
     const sessions = await Session.find({ courseId: req.params.id });
 
     res.json({ course, sessions });
@@ -166,11 +162,19 @@ app.get("/api/courses/:id/sessions", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
-
-
-
-
+//delete route for deleting session at specifsession
+app.delete("/api/sessions/:id", async (req, res) => {
+  try {
+    const session = await Session.findByIdAndDelete(req.params.id);
+    if (!session) {
+      return res.status(404).json({ error: "Session not found" });
+    }
+    res.status(200).json({ message: "Session deleted successfully" });
+  } catch (error) {
+    console.error("❌ Error deleting session:", error);
+    res.status(500).json({ error: "Error deleting session" });
+  }
+});
 
 // Start the server
 const PORT = process.env.PORT || 5000;
